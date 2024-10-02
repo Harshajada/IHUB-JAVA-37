@@ -1,0 +1,484 @@
+Exceptions
+===========
+Runtime errors are called exceptions.
+
+We have two types of exceptions.
+
+1) Predefined exceptions 
+
+2) Userdefined exceptions 
+
+1) Predefined exceptions 
+-------------------------
+Built-in exceptions are called predefined exceptions.
+
+We have following list of predefined exceptions.
+
+i) NO_DATA_FOUND exception 
+
+ii) TOO_MANY_ROWS exception 
+
+iii) ZERO_DIVIDE exception 
+
+iv) VALUE_ERROR exception 
+
+v) DUP_VAL_ON_INDEX exception 
+
+vi) OTHERS  
+
+i) NO_DATA_FOUND exception 
+----------------------------
+This exception will occur when select statement does not return any row.
+
+ex:
+	DECLARE 
+	L_ename emp.ename%TYPE;
+	BEGIN
+	select ename into L_ename from emp where eid=209;
+	DBMS_OUTPUT.PUT_LINE(L_ename);
+	EXCEPTION
+	WHEN NO_DATA_FOUND THEN 
+	DBMS_OUTPUT.PUT_LINE('Please check employee id ');
+	END;
+	/
+
+ii) TOO_MANY_ROWS exception 
+----------------------------
+This exception will raise when select statement returns more then one row.
+
+ex:
+	DECLARE 
+	L_ename emp.ename%TYPE;
+	BEGIN
+	select ename into L_ename from emp where deptno=10;
+	DBMS_OUTPUT.PUT_LINE(L_ename);
+	EXCEPTION
+	WHEN TOO_MANY_ROWS THEN 
+	DBMS_OUTPUT.PUT_LINE('select stmt returns more then one row ');
+	END;
+	/
+
+
+iii) ZERO_DIVIDE exception
+---------------------
+This exception will raise when we divide any number with zero.
+
+ex:
+	DECLARE 
+	A number;
+	BEGIN
+	A:=10/0;
+	DBMS_OUTPUT.PUT_LINE(A);
+	EXCEPTION
+	WHEN ZERO_DIVIDE THEN 
+	DBMS_OUTPUT.PUT_LINE('Dont divide by zero');
+	END;
+	/
+
+iv) VALUE_ERROR exception 
+------------------------
+This exception will raise when there is a mismatch with datatype or size.
+
+ex:
+	DECLARE 
+	L_esal  emp.esal%TYPE;
+	BEGIN
+	select ename into L_esal from emp where eid=201;
+	DBMS_OUTPUT.PUT_LINE(L_esal);
+	EXCEPTION
+	WHEN VALUE_ERROR THEN 
+	DBMS_OUTPUT.PUT_LINE('Please check datatype ');
+	END;
+	/
+
+ex:
+	DECLARE 
+	A number(3);
+	BEGIN
+	A:=12345;
+	DBMS_OUTPUT.PUT_LINE(A);
+	EXCEPTION
+	WHEN VALUE_ERROR THEN 
+	DBMS_OUTPUT.PUT_LINE('Please check the size');
+	END;
+	/
+
+v) DUP_VAL_ON_INDEX exception 
+-----------------------------
+This exception will raise when we are trying to insert duplicate value in a primary key.
+
+ex:
+	alter table student add primary key(sno);	
+
+	BEGIN
+	insert into student values(103,'ramulu','pune');
+	DBMS_OUTPUT.PUT_LINE('Record Inserted');
+	EXCEPTION 
+	WHEN DUP_VAL_ON_INDEX then 
+	DBMS_OUTPUT.PUT_LINE('No Duplicates Allowed');
+	END;
+	/
+
+vi) OTHERS
+------------
+It is a universal angular exception which can handle all types of exceptions.
+
+
+ex:
+	DECLARE 
+	L_ename emp.ename%TYPE;
+	BEGIN
+	select ename into L_ename from emp where eid=209;
+	DBMS_OUTPUT.PUT_LINE(L_ename);
+	EXCEPTION
+	WHEN OTHERS THEN 
+	DBMS_OUTPUT.PUT_LINE('Please check employee id ');
+	END;
+	/
+
+
+
+2) Userdefined exceptions 
+-------------------------
+Exceptions which are created by the user based on the requirement are called userdefined exceptions.
+
+steps to develop userdefined exceptions
+-----------------------------------
+step1:
+-----
+	Declare the exception 
+
+step2:
+-----
+	Raise the exception 
+
+step3:
+-----
+	Handle the exception 
+
+ex:
+---
+	DECLARE 
+	MY_EX1 EXCEPTION;
+	SAL number:=5000;
+	BEGIN 
+	
+	IF SAL>2000 THEN 
+	RAISE MY_EX1;
+	END IF; 
+	DBMS_OUTPUT.PUT_LINE(SAL);
+
+	EXCEPTION
+	WHEN MY_EX1 THEN 
+	DBMS_OUTPUT.PUT_LINE('Salary is Too High');	
+	END;
+	/
+
+Cursors 
+========
+Cursor is a PL/SQL block which is used to run select commands.
+
+We have two types of cursors.
+
+1) Implicit cursor 
+
+2) Explicit cursor 
+
+1) Implicit cursor 
+-------------------
+All the activities related to cursor like opening the cursor, processing the cursor and closing the cursor which is done automatically is called implicit cursor.
+
+We have types of implicit cursor attributes.
+
+i) SQL%ISOPEN 
+-------------
+	It is a boolean attribute which always returns false.
+
+ii) SQL%FOUND
+------------
+	It is a boolean attribute which returns true if SQL is success and returns false 
+	is SQL command is failed.
+
+iii) SQL%NOTFOUND 
+----------------
+	It is completely inverse of SQL%FOUND.
+
+	It is a boolean attribute which returns true if SQL is failed and returns false 
+	is SQL command is success.
+
+iv) SQL%ROWCOUNT  
+----------------
+	It will return number of records effected in a database table.
+
+
+i) SQL%ISOPEN 
+------------
+	BEGIN
+
+	IF  SQL%FOUND THEN 
+	DBMS_OUTPUT.PUT_LINE('Cursor is opened');
+	ELSE
+	DBMS_OUTPUT.PUT_LINE('Cursor is closed');
+	END IF;
+
+	END;
+	/
+
+ii) SQL%FOUND
+-----------
+	
+	BEGIN
+	update student set sname='raja' where sno=101;
+	IF SQL%FOUND THEN 
+	DBMS_OUTPUT.PUT_LINE('Record Updated');
+	ELSE
+	DBMS_OUTPUT.PUT_LINE('Record Not Updated');
+	END IF;
+	END;
+	/
+
+
+iii) SQL%NOTFOUND
+-----------
+	
+	BEGIN
+	update student set sname='raja' where sno=109;
+	IF SQL%NOTFOUND THEN 
+	DBMS_OUTPUT.PUT_LINE('Record Updated');
+	ELSE
+	DBMS_OUTPUT.PUT_LINE('Record Not Updated');
+	END IF;
+	END;
+	/
+
+iv) SQL%ROWCOUNT 
+---------------
+	
+	BEGIN
+	update student set sname='raja';
+	DBMS_OUTPUT.PUT_LINE(SQL%ROWCOUNT||' Records Updated');
+	END;
+	/
+
+
+2) Explicit cursor 
+------------------
+All the activities related to cursor like opening the cursor, processing the cursor and closing the cursor is done by the programmer is called explicit cursor.
+
+We need to use explicit cursor when select statement returns more then one row.
+
+We have following list of explicit cursor attributes.
+
+i) %ISOPEN 
+---------
+	It returns true if cursor is open and returns false if cursor is closed.
+
+ii) %FOUND 
+----------
+	It returns true if SQL command is success and returns false is SQL command is failed.
+
+iii) %NOTFOUND 
+-----------
+	It returns false if SQL command is success and returns true is SQL command is failed.
+
+iv) %ROWCOUNT 
+-----------
+	It returns number of records effected in a database table.
+
+
+Steps to create a explicit cursor 
+---------------------------------
+step1:
+------
+	Declare a cursor 
+
+step2:
+------
+	Open the cursor 
+
+step3:
+-----
+	Fetch the data from cursor to local variables.
+
+step4:
+-----
+	Close the cursor  
+
+
+Q) Write a PL/SQL program to display employee names from employee table?
+
+
+	DECLARE 
+	CURSOR C1 is select ename from emp;
+	L_ename emp.ename%TYPE;
+	BEGIN
+	OPEN C1;
+	
+	LOOP
+	FETCH C1 into L_ename;
+	EXIT WHEN C1%NOTFOUND;
+	DBMS_OUTPUT.PUT_LINE(L_ename);
+	END LOOP;
+
+	CLOSE C1;
+	END;
+	/
+
+
+Q) Write a PL/SQL program to display employee id,employee name and employee salary from emp table?
+
+	DECLARE 
+	CURSOR C2 is select eid,ename,esal from emp;
+	L_eid emp.eid%TYPE;
+	L_ename emp.ename%TYPE;
+	L_esal emp.esal%TYPE;
+	BEGIN
+	OPEN C2;
+	
+	LOOP
+	FETCH C2 into L_eid,L_ename,L_esal;
+	EXIT WHEN C2%NOTFOUND;
+	DBMS_OUTPUT.PUT_LINE(L_eid||' '||L_ename||' '||L_esal);
+	END LOOP;
+
+	CLOSE C2;
+	END;
+	/
+
+Q) Write a PL/SQL program to display employees information from emp table?
+
+	DECLARE 
+	CURSOR C3 is select * from emp;
+	A emp%ROWTYPE;
+	BEGIN
+	OPEN C3;
+	
+	LOOP
+	FETCH C3 into A;
+	EXIT WHEN C3%NOTFOUND;
+	DBMS_OUTPUT.PUT_LINE(A.eid||' '||A.ename||' '||A.esal||' '||A.deptno||' '||A.job);
+	END LOOP;
+
+	CLOSE C3;
+	END;
+	/	
+
+
+Procedure
+=========
+It is a named PL/SQL block which compiled and stored permanently to database for repeated execution.
+
+syntax:
+-------
+	create or replace procedure <procedure_name>
+	is
+	begin
+	-
+	-
+	-
+	end;
+	/
+
+
+Q) Write a procedure to display Hello World?
+
+	create or replace procedure p1 
+	is
+	begin 
+	DBMS_OUTPUT.PUT_LINE('Hello World');
+	END;
+	/
+
+	To execute above procedure we need to use below command.
+	ex:
+		exec  p1;
+
+
+Assignment 
+===========
+Q) Write a java program to find the characters with least frequency?
+
+input:
+	aaagbbcccce
+
+output:
+	g,e
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

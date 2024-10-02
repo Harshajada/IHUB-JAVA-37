@@ -1,0 +1,431 @@
+To see the output in PL/SQL we need to execute below command.
+ex:
+	SQL> set  serveroutput  on 
+
+
+In PL/SQL we can perform DRL operations.
+
+To perform DRL operations in PL/SQL we need to use "into" clause.
+
+
+Q) Write a PL/SQL program to display employe name whose employee id is 201?
+
+	DECLARE 
+	L_ename  varchar2(10);
+	BEGIN
+	select ename into L_ename from emp where eid=201;
+	DBMS_OUTPUT.PUT_LINE(L_ename);
+	END;
+	/ 
+
+
+Q) Write a PL/SQL program to display employee name, employee salary whose employee id is 202?
+
+	DECLARE 
+	L_ename varchar2(10);
+	L_esal  number(10,2);
+	BEGIN
+	select ename,esal into L_ename,L_esal from emp where eid=202;
+	DBMS_OUTPUT.PUT_LINE(L_ename||' '||L_esal);
+	END;
+	/
+
+
+Q) Write a PL/SQL program to display employee name, employee salary based on employee id?
+
+	DECLARE 
+	L_ename varchar2(10);
+	L_esal  number(10,2);
+	L_eid   number(3);
+	BEGIN
+	L_eid:=&eid;
+	select ename,esal into L_ename,L_esal from emp where eid=L_eid;
+	DBMS_OUTPUT.PUT_LINE(L_ename||' '||L_esal);
+	END;
+	/
+
+Percentage(%) TYPE attribute 
+=============================
+It is used to declare a local variable with respect to column type.
+
+syntax:
+-------
+	<variable_name>  <table_name>.<column_name>%TYPE;
+
+ex:
+	L_job    emp.job%TYPE; 
+
+
+Q) Write a PL/SQL program to display employee name, employee salary and department number from employee table based on employee id ?
+
+	DECLARE 
+	L_ename  emp.ename%TYPE;
+	L_esal   emp.esal%TYPE;
+	L_deptno emp.deptno%TYPE;
+	L_eid    emp.eid%TYPE;
+	BEGIN
+	L_eid:=&eid;
+	select ename,esal,deptno into L_ename,L_esal,L_deptno from emp where eid=L_eid; 
+	DBMS_OUTPUT.PUT_LINE(L_ename||' '||L_esal||' '||L_deptno);
+	END;
+	/
+
+
+Percentage(%) ROWTYPE attribute
+===============================
+It is used to declare a local variable which holds complete row of a table.
+
+syntax:
+-------
+	<variable_name>  <table_name>%ROWTYPE;
+
+ROWTYPE variable we can't print directly.
+
+Inorder to get the values from ROWTYPE we need to use variable_name.column_name.
+
+
+ex:
+
+Q) Write a PL/SQL program to display employee information whose employee id is 205?
+
+	DECLARE 
+	A  emp%ROWTYPE;
+	BEGIN
+	select * into A from emp where eid=205;
+	DBMS_OUTPUT.PUT_LINE(A.eid||' '||A.ename||' '||A.esal||' '||A.deptno||' '||A.job||' '||A.comm);
+	END;
+	/
+
+
+ex:
+
+Q) Write a PL/SQL program to display employee information based on employee id?
+
+	DECLARE 
+	A emp%ROWTYPE;
+	L_eid emp.eid%TYPE;
+	BEGIN
+	L_eid:=&eid;
+	select * into A from emp where eid=L_eid;
+	DBMS_OUTPUT.PUT_LINE(A.eid||' '||A.ename||' '||A.esal||' '||A.deptno||' '||A.job||' '||A.comm);
+	END;
+	/
+
+
+Control Statements
+==================
+We have three control statements in PL/SQL.
+
+1) IF THEN 
+
+2) IF THEN ELSE 
+
+3) IF THEN ELSIF THEN ELSE 
+
+
+1) IF STMT 
+----------
+It evaluates the code only if condition is true. 
+
+ex:
+---
+	DECLARE 
+	A number:=7;
+	BEGIN
+	
+	IF A>5 THEN 
+	DBMS_OUTPUT.PUT_LINE('Greatest');
+	END IF; 
+
+	END;
+	/
+	
+ex:
+---
+	DECLARE 
+	A number:=2;
+	BEGIN
+	
+	IF A>5 THEN 
+	DBMS_OUTPUT.PUT_LINE('Greatest');
+	END IF; 
+
+	END;
+	/
+
+2) IF THEN ELSE
+-----------------
+It evaluates the code either our condition is true or false.
+
+ex:
+---
+	DECLARE 
+	A number:=7;
+	BEGIN
+
+	IF A>5 THEN
+	DBMS_OUTPUT.PUT_LINE('Greatest');
+	ELSE
+	DBMS_OUTPUT.PUT_LINE('Least');
+	END IF;
+
+	END;
+	/
+
+ex:
+---
+	DECLARE 
+	A number:=2;
+	BEGIN
+
+	IF A>5 THEN
+	DBMS_OUTPUT.PUT_LINE('Greatest');
+	ELSE
+	DBMS_OUTPUT.PUT_LINE('Least');
+	END IF;
+
+	END;
+	/
+
+3) IF THEN ELSIF THEN ELSE 
+---------------------------
+It evalutes the code based on multiple conditions.
+
+ex:
+--
+	DECLARE 
+	N  number;
+	BEGIN  
+	N:=&option;
+	
+	IF N=100 THEN 
+	DBMS_OUTPUT.PUT_LINE('It is police number');
+	ELSIF N=103 THEN 
+	DBMS_OUTPUT.PUT_LINE('It is enquiry number');
+	ELSIF N=108 THEN 
+	DBMS_OUTPUT.PUT_LINE('It is emergency number');
+	ELSE
+	DBMS_OUTPUT.PUT_LINE('Invalid option');
+	END IF;
+
+	END;
+	/
+
+LOOPS 
+=====
+We have three types of LOOPS in PL/SQL.
+
+1) Simple LOOP
+
+2) While LOOP
+
+3) For LOOP 
+
+1) Simple LOOP
+---------------
+It evaluates the code how long our condition is true.
+
+ex:
+	DECLARE 
+	A number:=1;
+	BEGIN
+	DBMS_OUTPUT.PUT_LINE('Welcome');
+	
+	LOOP
+	DBMS_OUTPUT.PUT_LINE('Hello');
+	EXIT WHEN A=4;
+	A:=A+1;
+	END LOOP;
+
+	DBMS_OUTPUT.PUT_LINE('Thankyou');
+	END;
+	/
+	
+ex:
+---
+	DECLARE 
+	A number:=1;
+	BEGIN
+	
+	LOOP
+	DBMS_OUTPUT.PUT_LINE(A);
+	EXIT WHEN A=10;
+	A:=A+1;
+	END LOOP;
+
+	END;
+	/
+
+2) While LOOP
+---------------
+It evaluates the code how long our condition is true.
+
+ex:
+	DECLARE 
+	A number:=1;
+	BEGIN 
+	DBMS_OUTPUT.PUT_LINE('Welcome');	
+	
+	WHILE A<=4 LOOP
+	DBMS_OUTPUT.PUT_LINE('Hello');
+	A:=A+1;
+	END LOOP;
+
+	DBMS_OUTPUT.PUT_LINE('Thankyou');
+	END;
+	/
+
+ex:
+---
+
+	DECLARE 
+	A number:=1;
+	N number:=5;
+	BEGIN 	
+	
+	WHILE A<=10 LOOP
+	DBMS_OUTPUT.PUT_LINE(N||' * '||A||' = '||N*A);
+	A:=A+1;
+	END LOOP;
+
+	END;
+	/
+
+3) For LOOP 
+------------
+It evalutes the code how long our condition is true.
+
+ex:
+	DECLARE 
+	A number;
+	BEGIN
+	DBMS_OUTPUT.PUT_LINE('Welcome');
+
+	FOR A IN 1 .. 4 LOOP
+	DBMS_OUTPUT.PUT_LINE('Hello');
+	END LOOP;
+
+	DBMS_OUTPUT.PUT_LINE('Thankyou');
+	END;
+	/
+
+
+Interview Question 
+==================
+
+Q) Write a java program to display below loop pattern?
+
+4 4 4 4 4 4 4 
+4 3 3 3 3 3 4	    	
+4 3 2 2 2 3 4
+4 3 2 1 2 3 4
+4 3 2 2 2 3 4
+4 3 3 3 3 3 4
+4 4 4 4 4 4 4
+
+class Test  
+{
+	public static void main(String[] args) 
+	{
+		int n=4;
+		
+		int size=7;
+		
+		for(int i=0;i<size;i++)
+		{
+			for(int j=0;j<size;j++)
+			{
+				int value= n - Math.min(Math.min(i,j),Math.min(size-i-1,size-j-1));
+				System.out.print(value+" ");
+			}
+			//new line 
+			System.out.println();
+		}
+	}
+}
+
+Q) Write a java program to reverse of a given number using recursion?
+
+input:
+	123
+
+output:
+	321
+
+ex:
+---
+class Test  
+{
+	public static void main(String[] args) 
+	{
+		int num=123;
+		System.out.println(reverse(num));
+	}
+	public static int reverse(int num)
+	{
+		return reverseNumber(num,0);
+	}
+	public static int reverseNumber(int n,int reversed)
+	{
+		if(n==0)
+		{
+			return reversed;
+		}
+		int reminder = n % 10;
+		
+		reversed = (reversed * 10) + reminder;
+		
+		return reverseNumber(n/10,reversed);
+	}
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

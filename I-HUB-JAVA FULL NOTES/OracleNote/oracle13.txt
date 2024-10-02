@@ -1,0 +1,430 @@
+To see the output in PL/SQL we need to use below command.
+
+ex:
+	SQL> set  serveroutput  on 
+
+Procedure may contains three parameters.
+
+1) IN parameter 
+
+2) OUT parameter 
+
+3) IN OUT parameter 
+
+1) IN parameter 
+---------------
+It is used to accept the values from the user.
+
+
+Q) Write a procedure to perform sum of two numbers?
+
+	create or replace procedure sum(A IN number,B IN number)
+	is
+	C number;
+	begin
+	C:=A+B;
+	DBMS_OUTPUT.PUT_LINE(C);
+	END;
+	/
+	
+	We can call above procedure by using below command.
+	ex:
+		exec   sum(10,20);
+
+
+Using procedure we can perform DML operations.
+
+Q) Write a procedure to delete student record based on student number?
+
+	create or replace procedure delete_student(L_sno IN student.sno%TYPE)	
+	is
+	begin
+	delete from student where sno=L_sno;
+	DBMS_OUTPUT.PUT_LINE('Record Deleted');
+	END;
+	/
+
+	We can call above procedure by using below command.
+	ex:
+		exec  delete_student(102);
+
+
+2) OUT parameter
+---------------
+It is used to return the values to the user.
+
+
+Q) Write a procedure to perform sum of two numbers and return sum?
+
+	create or replace procedure ret_sum(A IN number,B IN number,C OUT number)
+	is
+	begin
+	C:=A+B;
+	END;
+	/
+
+Steps to invoke the procedure having OUT parameter
+--------------------------------------------------
+step1:
+-----
+	Declare bind variable 
+	ex:
+		variable N number;
+step2:
+------
+	Execute the procedure.
+	ex:
+		exec  ret_sum(10,20,:N);
+
+step3:
+-----
+	Print the bind variable.
+	ex:
+		print N;
+
+
+3) IN OUT parameter
+---------------------
+It is used to accept and return the values from/to user.
+
+
+Q) Write a procedure to display square of a given number?
+
+
+	create or replace procedure ret_square(A IN OUT number)
+	is
+	begin
+	A:=A*A;
+	END;
+	/
+
+Steps to invoke the procedure having IN OUT parameter
+----------------------------------------------------
+step1:
+-----
+	Declare a bind variable.
+	ex:
+		variable N number;
+
+step2:
+-----
+	Initialize the bind variable.
+	ex:
+		BEGIN
+		:N:=5;
+		END;
+		/
+
+step3:
+-----
+	Execute the procedure.
+	ex:	
+		exec ret_square(:N);	
+
+
+step4:
+------
+	Print the bind variable.
+	ex:
+		print N;
+
+Q) Write a query to see the list of procedures present in database?
+
+	select object_name from user_objects where object_type='PROCEDURE';
+
+
+Q) Write a query to see the source code of a procedure?
+	
+	select text from user_source where name='P1';
+
+Q) Write a query to drop the procedure?
+
+	drop procedure p1;
+	drop procedure sum;
+	drop procedure ret_sum;
+	drop procedure ret_square;
+
+
+
+
+Functions
+==========
+Function is a named PL/SQL block which must and should returns a value.
+
+syntax:
+------
+	create or replace function <function_name>
+	return datatype
+	is
+	begin
+	-
+	-
+	-
+	return datatype;
+	end;
+	/
+
+Q) Write a function to perform sum of two numbers and return sum?
+
+	create or replace function f1(A number,B number)
+	return number
+	is
+	C number;
+	begin
+	C:=A+B;
+	return C;
+	END;
+	/
+	
+	We can invoke above function by using below command.
+	ex:
+		select f1(10,50) from dual;
+
+
+Q) Write a function to accept one salary and find out 10% of TDS?
+
+	create or replace function f2(salary number)
+	return number
+	is
+	tax number;
+	begin
+	tax:=salary*10/100;
+	return tax;
+	END;
+	/
+	
+	We can invoke above function by using below command.
+	ex:
+		select f2(1000) from dual;
+		select eid,ename,esal,f2(esal) from emp;
+		select eid,ename,esal,f2(esal) AS TAX from emp;
+
+
+Q) What is the difference between procedures and functions?
+
+Procedures					Functions
+----------------				-----------
+Procedure may or may not returns a value.	Function always returns a value.
+
+DML operations are allowed.			DML operations are not allowed.
+
+Can't be invoked by using select command.	Can be invoked by using select command.
+
+
+Q) Write a query to see the list of functions present in database?
+
+	select object_name from user_objects where object_type='FUNCTION';
+
+
+Q) Write a query to see the source code of a function?
+
+	select text from user_source where name='F1';
+
+
+Q) Write a query to drop the function?
+
+	drop function f1;
+	drop function f2;
+
+
+Package
+=======
+A package is a collection of logical related sub programs.
+
+PL/SQL procedures and functions are called logical related sub programs.
+
+Package creation involved in two steps.
+
+1) Package specification 
+----------------------
+	It is a declaration of logical related sub programs.
+
+2) Package body 
+--------------
+	It contains definition of logical related sun programs.
+
+ex:1
+-----
+
+package specification 
+--------------------
+	create or replace package pkg1
+	is
+	procedure p1(A IN number,B IN number);
+	end pkg1;
+	/
+
+package body
+-----------
+	create or replace package body pkg1
+	is
+	procedure p1(A IN number,B IN number)
+	is
+	C number;
+	begin
+	C:=A+B;
+	DBMS_OUTPUT.PUT_LINE(C);
+	END;
+	end pkg1;
+	/
+
+
+	We can invoke above package by using below command.
+	ex:
+		exec  pkg1.p1(10,30);
+
+
+ex:2
+-----
+
+package specification 
+--------------------
+	create or replace package pkg2
+	is
+	function f1(A number,B number)
+	return number;
+	end pkg2;
+	/
+
+package body 
+-------------
+	create or replace package body pkg2
+	is
+	function f1(A number,B number)
+	return number
+	is
+	C number;
+	begin
+	C:=A+B;
+	return C;
+	END;
+	end pkg2;
+	/
+
+
+	We can invoke above pakage by using below command.
+	ex:
+		select pkg2.f1(40,60) from dual;
+
+
+Q) Write a query to see the list of packages present in database?
+
+	select object_name from user_objects where object_type='PACKAGE';
+
+
+Q) Write a query to see the source code of a package?
+
+	select text from user_source where name='PKG1';
+
+
+Q) Write a query to drop the package?
+
+	drop package body pkg1;
+	drop package pkg1;
+	
+
+Triggers
+=========
+Trigger is a PL/SQL block which executes based on events.
+
+Trigger events are insert, update and delete.
+
+Triggers timings before, after and insteadof.
+
+syntax:
+-------
+	create or replace trigger <trigger_name> <timing> <event> on <object_name>
+	begin
+	-
+	-
+	END;
+	/
+
+ex:
+----
+	create or replace trigger trg1 before insert on student
+	begin
+	DBMS_OUTPUT.PUT_LINE('Thank you for inserting');
+	END;
+	/
+
+	select * from student;
+
+	insert into student values(102,'ravi','delhi'); // trigger executed
+
+
+Trigger can be created on multiple events also.
+
+ex:
+	create or replace trigger trg2 after insert or update or delete on student
+	begin
+	IF inserting THEN 
+	DBMS_OUTPUT.PUT_LINE('Thanks for inserting');
+	ELSIF updating then 
+	DBMS_OUTPUT.PUT_LINE('Thanks for updating');
+	ELSE
+	DBMS_OUTPUT.PUT_LINE('Thanks for deleting');
+	END IF;
+	END;
+	/
+
+	insert into student values(104,'ramana','vizag'); // trigger executed
+
+	delete from student where sno=103; // trigger executed
+
+
+
+
+Triggers are divided into two types.
+
+1) Statement level trigger 
+---------------------------
+	If a trigger executes only for one time irrespective of number of records effected 
+	in a database table is caleld statement level trigger.
+
+	By default every trigger is a statement level trigger.
+
+	ex:
+		create or replace trigger trg3 before delete on student
+		begin
+		DBMS_OUTPUT.PUT_LINE('Thanks for delete');
+		END;
+		/	
+
+		delete from student ; // trigger will execute one time 
+
+2) Row level trigger 
+-------------------
+	In row level trigger , our trigger will execute multiple times based on number of records
+	effected in a datase table.
+
+	To create row level trigger we need to use "FOR EACH ROW" clause.
+
+	ex:
+		create or replace trigger trg3 before delete on student FOR EACH ROW
+		begin
+		DBMS_OUTPUT.PUT_LINE('Thanks for delete');
+		END;
+		/	
+
+		delete from student; // Trigger will execute three times 
+	
+
+Q) Write a query to see the list of triggers present in database?
+
+	select object_name from user_objects where object_type='TRIGGER';
+
+
+Q) Write a query to see the source code of a trigger?
+
+	select text from user_source where name='TRG1';
+
+
+Q) Write a query to drop the trigger?
+	
+	drop trigger trg1;
+	drop trigger trg2;
+	drop trigger trg3;
+
+
+

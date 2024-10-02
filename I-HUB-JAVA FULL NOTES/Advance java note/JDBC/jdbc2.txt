@@ -1,0 +1,437 @@
+How many steps are there to develop JDBC Application
+=====================================================
+There are six steps to develop JDBC application.
+
+1) Register JDBC driver with DriverManager service.
+
+2) Establish the connection with database software.
+
+3) Create Statement object.
+
+4) Sends and executes SQL query in database software.
+
+5) Gather the result from database software to process the result.
+
+6) Close all jdbc connection objects.
+
+Eclipse 
+=========
+
+IDE		:	JEE 
+
+Environment	:	Java 
+
+Vendor		:	Eclipse Foundation 
+
+Website		:	www.eclipse.org
+
+File Format	:	Zip
+
+Download link	:
+
+https://drive.google.com/file/d/1c8TAX048EjAubIFByqZ0DzWZI3oKuauR/view?usp=drive_link
+
+Steps to develop first JDBC application to read the record from student table
+============================================================================
+step1:
+-----
+	Create a student table with records.
+	ex:
+		drop table student;
+		create table student(sno number(3),sname varchar2(10),sadd varchar2(12));
+		insert into student values(101,'raja','hyd');
+		insert into student values(102,'ravi','delhi');
+		insert into student values(103,'ramana','vizag');
+		commit;
+		
+step2:
+-----
+	Launch eclipse IDE by choosing workspace location.
+
+step3:
+-----
+	Create a java project i.e IH-JAVA-037.
+	ex:
+		File --> new --> project --> java project --> Next -->
+		Name : IH-JAVA-037 --> Next -> Finish.
+
+step4:
+------
+	Add "ojdbc14.jar" file in project build path.
+	(C:\oraclexe\app\oracle\product\10.2.0\server\jdbc\lib)
+	ex:
+		right click to IH-JAVA-037 --> build path --> configure build path -->
+		libraries ---> classpath ---> Add external jar's ---> select ojdbc14.jar 
+		--> open --> apply and close.
+
+step5:
+-----
+	Create a "com.ihub.www" package inside "src" folder.
+	ex:
+		right click to src folder --> new --> package -->
+		Name : com.ihub.www --> finish.
+
+
+step6:
+------
+	Create a SelectApp.java file inside "com.ihub.www" package.
+	ex:
+		right click to com.ihub.www --> new --> class ---> 
+		Name : SelectApp  --> Finish. 
+
+SelectApp.java
+------------
+package com.ihub.www;
+
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.ResultSet;
+import java.sql.Statement;
+
+public class SelectApp 
+{
+	public static void main(String[] args)throws Exception 
+	{
+		Class.forName("oracle.jdbc.driver.OracleDriver");
+		Connection con=DriverManager.getConnection("jdbc:oracle:thin:@localhost:1521:XE","system","admin");
+		Statement st=con.createStatement();
+		ResultSet rs=st.executeQuery("select * from student");
+		while(rs.next())
+		{
+			System.out.println(rs.getInt(1)+" "+rs.getString(2)+" "+rs.getString(3));
+		}
+		rs.close();
+		st.close();
+		con.close();
+	}
+}
+
+step7:
+-----
+	Run JDBC application.
+
+
+Q) Write a jdbc application to select student record based on student number?
+
+package com.ihub.www;
+
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.ResultSet;
+import java.sql.Statement;
+import java.util.Scanner;
+
+public class SelectApp2 
+{
+	public static void main(String[] args)throws Exception  
+	{
+		Scanner sc=new Scanner(System.in);
+		
+		System.out.println("Enter the student no :");
+		int no=sc.nextInt();
+		
+		Class.forName("oracle.jdbc.driver.OracleDriver");
+		Connection con=DriverManager.getConnection("jdbc:oracle:thin:@localhost:1521:XE","system","admin");
+		Statement st=con.createStatement();
+		
+		String qry="select * from student where sno="+no;
+		
+		ResultSet rs=st.executeQuery(qry);
+		while(rs.next())
+		{
+			System.out.println(rs.getInt(1)+" "+rs.getString(2)+" "+rs.getString(3));
+		}
+		rs.close();
+		st.close();
+		con.close();
+	}
+}
+
+Non-Select Queries
+===================
+
+Q) Write a jdbc application to insert a record into student table?
+
+package com.ihub.www;
+
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.Statement;
+import java.util.Scanner;
+
+public class InsertApp 
+{
+	public static void main(String[] args)throws Exception  
+	{
+		Scanner sc=new Scanner(System.in);
+		System.out.println("Enter the student no:");
+		int no=sc.nextInt();
+		
+		System.out.println("Enter the student name :");
+		String name=sc.next();
+		
+		System.out.println("Enter the student address :");
+		String add=sc.next();
+		
+		//converting inputs according to SQL query
+		name="'"+name+"'";
+		add="'"+add+"'";
+		
+		Class.forName("oracle.jdbc.driver.OracleDriver");
+		Connection con=DriverManager.getConnection("jdbc:oracle:thin:@localhost:1521:XE","system","admin");
+		Statement st=con.createStatement();
+		
+		String qry="insert into student values("+no+","+name+","+add+")";
+		
+		int result=st.executeUpdate(qry);
+		
+		if(result==0)
+			System.out.println("No Record Inserted");
+		else
+			System.out.println(result+" Record Inserted");
+		
+		st.close();
+		con.close();
+	}
+}
+
+Q) Write a jdbc application to update student name based on student no?
+
+package com.ihub.www;
+
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.Statement;
+import java.util.Scanner;
+
+public class UpdateApp 
+{
+	public static void main(String[] args)throws Exception  
+	{
+		Scanner sc=new Scanner(System.in);
+		
+		System.out.println("Enter the student no:");
+		int no=sc.nextInt();
+		
+		System.out.println("Enter the student name :");
+		String name=sc.next();
+		
+		//convert inputs according to SQL query
+		name="'"+name+"'";
+		
+		Class.forName("oracle.jdbc.driver.OracleDriver");
+		Connection con=DriverManager.getConnection("jdbc:oracle:thin:@localhost:1521:XE","system","admin");
+		Statement st=con.createStatement();
+		
+		String qry="update student set sname="+name+" where sno="+no;
+		
+		int result=st.executeUpdate(qry);
+		
+		if(result==0)
+			System.out.println("No Record Updated");
+		else
+			System.out.println(result+" Record Updated");
+		
+		st.close();
+		con.close();
+		
+	}
+}
+
+
+Q) Write a jdbc application to delete the record based on student number ?
+
+package com.ihub.www;
+
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.Statement;
+import java.util.Scanner;
+
+public class DeleteApp {
+
+	public static void main(String[] args)throws Exception  
+	{
+		Scanner sc=new Scanner(System.in);
+		
+		System.out.println("Enter the student no:");
+		int no=sc.nextInt();
+		
+		Class.forName("oracle.jdbc.driver.OracleDriver");
+		Connection con=DriverManager.getConnection("jdbc:oracle:thin:@localhost:1521:XE","system","admin");
+		Statement st=con.createStatement();
+		
+		String qry="delete from student where sno="+no;
+		
+		int result=st.executeUpdate(qry);
+		
+		if(result==0)
+			System.out.println("No Record Deleted");
+		else
+			System.out.println(result+" Record Deleted");
+		
+		st.close();
+		con.close();
+
+	}
+}
+
+
+Type1 JDBC Driver Architecture / JDBC-ODBC Bridge Driver (Partly Java Driver)
+============================================================================
+Type1 JDBC driver is not designed to interact with database software directly.
+
+It is designed to take the support of ODBC driver and Vendor DB library to locate and interact with database software.
+
+Diagram: jdbc2.1
+
+Advantages:
+
+1) It is built-in driver of JDK.
+
+2) Using Type1 JDBC driver we can interact with any database software.
+
+Disadvantages:
+
+1) This driver performance is low and it is not suitable for medium and large scale projects.Hence 
+   it is not a industry standard driver.
+
+2) To work with Type1 JDBC driver we need to arrange ODBC driver and Vendor DB library seperately.
+
+3) Since ODBC driver and vendor db library present at client side so it is not suitable for 
+   untrusted applets to database communication.
+
+
+
+Type2 JDBC Driver Architecture / Native API (Partly java driver)
+=================================================================
+Type2 JDBC driver is not designed to interact with database software directly.
+
+It is designed to take the support of Vendor db library to locate and interact with database software.
+
+Diagram: jdbc2.2
+
+Advantages:
+
+1) This driver will give better performance compare to Type1 JDBC driver.
+
+2) Type2 JDBC driver will not take the support of ODBC Driver.
+
+Disadvantages:
+
+1) This driver performance is quit slow and it is not suitable for medium and large scale projects.
+   Hence it is not a industry standard driver.
+
+2) To work with Type2 JDBC driver we need to arrange vendor db library seperately.
+
+3) Since vendor db library present at client side so it is not suitable for untrusted applets to 
+   database communication.
+
+4) For every database we need to arrange type2 jdbc driver seperately.
+
+
+
+Type4 JDBC Driver Architecture / Native Protocol (Java driver) / Thin Driver
+=============================================================================
+Type4 JDBC driver is not designed to take the support of ODBC Driver and Vendor DB library.
+
+It is designed to interact with database software directly.
+
+Diagram: jdbc2.3
+
+Advantages:
+
+1) This driver will give better performance compare to Type1 and Type2 JDBC Driver.
+
+2) This driver is completely developed in java so it will give platform independency.
+
+3) This driver will not take the support of ODBC driver and vendor db library.
+
+4) Since odbc driver and vendor db library not present at client side so it is suitable for 
+   untrusted applets to database communication.
+
+5) It suitable for medium and large scale projects.Hence it is a industry standard driver.
+
+Disadvantages:
+
+1) It is not a built-in driver of JDK.
+
+2) For every database software we need to arrange type4 JDBC driver seperately.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

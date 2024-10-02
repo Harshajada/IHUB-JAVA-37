@@ -1,0 +1,296 @@
+
+Q)Write a java program to read a string and find out sum of all digits in the string and check even number or odd number?
+
+Example:
+
+input:
+	NEX123
+
+output:
+	No of digits in the given string = 3
+	Sum of all digits in the given string = 6
+	Sum is even number
+
+ex:
+---
+class Test 
+{
+	public static void main(String[] args) 
+	{
+		String str="NEX123";
+		
+		String substr=str.replaceAll("[^0-9]","");  // 123
+		
+		int count=0,sum=0;
+		
+		for(int i=0;i<substr.length();i++)
+		{
+			int n=Character.getNumericValue(substr.charAt(i));
+			{
+				sum+=n;
+				count++;
+			}
+			
+		}
+		System.out.println("No of digits in the given string ="+count);
+		System.out.println("Sum of all digits in the given string ="+sum);
+		if(sum%2==0)
+			System.out.println("Sum is even number");
+		else
+			System.out.println("Sum is odd number");
+		
+	}
+}
+
+update command
+===============
+It is used to update the records in a database table.
+
+syntax:
+-------
+	update <table_name> set <col_name>=<value> where condition;
+
+ex:
+----
+	update student set sname='rani' where sno=101;
+
+	update student set sname='gogo',sadd='AP' where sno=102;
+
+	update student set sadd=null where sname='raj';
+
+	commit;
+
+
+Note:
+-----
+If we are not using where clause then all rows will be updated.
+
+ex:
+	update student set sname='raja';
+
+
+
+Delete command
+===============
+It is used to delete the records from database table.
+
+syntax:
+------
+	delete from <table_name> where condition;
+
+ex:
+	delete from student where sno=105;
+
+	delete from student where sname='ravi';
+
+	delete from student where sadd='hyd';
+
+	commit;
+
+Note:
+----
+If we won't use where clause then all rows will be deleted.
+ex:
+	delete from student;
+	delete from emp;
+	delete from dept; 
+
+
+	
+Interview Queries 
+-----------------
+
+Q) Write a query to increment salary by 1000 whose employee id is 201?
+
+	update emp set esal=esal+1000 where eid=201;
+
+
+
+Q) Write a query to change the address of a student from hyd to MP?
+
+	update student set sadd='MP' where sadd='hyd';
+
+
+
+Q) Write a query to terminate the employee whose employee id is 205?
+
+	delete from emp where eid=205;
+
+
+Q) Write a query to terminate all the employees whose salary is greater then 25000?
+
+	delete from emp where esal>25000;
+
+
+Q) Write a query to delete all students whose address is null?
+
+	delete from student where sadd is null;
+
+Logical Operators 
+=================
+To declare multiple conditions is where clause we need to use logical operators.
+
+We have three types of logical operators.
+
+1) AND 
+
+2) OR 
+
+3) NOT 
+
+1) AND 
+------
+It will return the records if all conditions are true.
+
+In logical AND operator , all conditions must be from same row.
+
+ex:
+---
+	select * from emp where eid=201 AND ename='Alan'; //  record 
+
+	select * from emp where eid=201 AND ename='Jose'; // no rows selected 
+
+	select * from emp where eid=209 AND ename='Alan'; // no rows selected 
+
+	select * from emp where eid=208 AND ename='gogo'; // no rows selected 	 
+
+2) OR 
+------
+It will return the records only if one condition is true.
+
+In logical OR operator, conditions can be from any row.
+
+ex:
+	select * from emp where eid=201 OR ename='Alan'; // 1 record 
+
+	select * from emp where eid=201 OR ename='Jose'; // 2 records 
+
+	select * from emp where eid=209 OR ename='Alan'; // 1 record 
+
+	select * from emp where eid=208 OR ename='gogo'; //  no rows selected 
+
+
+3) NOT 
+-------
+It will return the records except the condition.
+
+A '<>' symbol denoted as logical NOT operator.
+
+ex:
+	select * from emp where eid=201;
+
+	select * from emp where NOT eid=201;
+
+	select * from emp where  eid<>201;
+
+
+	select * from emp where NOT ename='Nancy';
+	select * from emp where ename<>'Nancy';
+
+
+Between operator
+===============
+It will return the records those who are in the range of values.
+
+Between operator takes the support of AND operator.
+
+In between operator we need to take lower limit then higher limit.
+
+ex:
+---
+	select * from emp where eid between 201 AND 206;
+
+	select * from emp where eid between 206 AND 201; // no rows selected 
+
+	select * from emp where deptno between 10 AND 30;	
+
+
+
+IN operator
+============
+IN operator is a replacement of OR operator.
+
+It will return the records those who are matching in the list of values.
+
+ex:
+---
+	select * from emp where eid IN (201,202,209);
+
+	select * from emp where ename IN ('Alan','Jose','Lara');
+
+
+Interview Queries
+================
+
+Q) Write a query to display employee information whose employee id is 202 and employee name is 
+    Jose?
+
+	select * from emp where eid=202 AND ename='Jose';
+
+
+
+Q) Write a query to display employee information whose employee salary is greater then 15000 AND less then 40000?
+
+	select * from emp where esal>15000 and esal<40000;
+
+	
+
+Q) Write a query to display employees information whose employee id is 201,202 and 203 ? 
+
+	select * from emp where eid IN (201,202,203);
+
+
+	
+Q) Write a query to display employees information those who are not working in 10 department?
+
+	select * from emp where deptno<>10;
+
+Q) Write a query to delete the records whose employee name is Alan, Jose and Kelvin?
+
+	delete from emp where ename IN ('Alan','Jose','Kelvin');
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+	

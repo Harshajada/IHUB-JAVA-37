@@ -1,0 +1,345 @@
+2) Multiple row sub query
+=========================
+If sub query returns more then one row is called multiple row sub query.
+
+To perform multiple row sub query we need to use multiple row operators.
+
+We have three multiple row operators.
+
+i) ANY 
+
+ii) ALL
+
+iii) IN 
+
+i) ANY 
+-------
+	select * from emp where esal > ANY (select esal from emp where deptno=10);
+
+	select * from emp where esal < ANY (select esal from emp where deptno=10);
+
+
+
+2) ALL
+-----
+	select * from emp where esal > ALL (select esal from emp where deptno=10);
+
+	select * from emp where esal < ALL (select esal from emp where deptno=20);
+
+
+3) IN 
+------
+	select * from emp where esal IN (select esal from emp where deptno=10);
+
+
+
+3) Multiple column sub query
+============================
+If a sub query returns more then one column is called multiple column sub query.
+
+In multiple column sub query we need to use IN operator.
+
+ex:
+---
+	select * from emp where(eid,ename,esal) IN (select eid,ename,esal from emp where eid=201);
+
+	select eid,ename,esal from emp where(eid,ename,esal) IN (select eid,ename,esal from emp
+								where eid=201);
+
+
+	select eid,ename,esal from emp where(eid,ename,esal) IN (select eid,ename,esal from emp
+								where deptno=10);
+
+
+Q) What is the difference between RDBMS and MongoDB?
+
+RDBMS						MongoDB
+------						-------
+It is a relational database.			It is a non-relational or document based database
+
+It can't store the data in key and value pair.	It can stores the data in key and value pair.
+
+Not suitable for hierarchical data storage.	Suitable for hierarchical data storage.
+
+It has a static schema.				It has a dynamic schema.
+
+It contains tables.				It contains collections.
+
+It is row based.				It is document based.
+
+It is column based.				It is field based.
+
+It is slower.					It is faster.
+
+It supports SQL query language.			It supports JSON query language.
+
+PL/SQL
+======
+PL/SQL stands for Procedural Language extension to Structured Query Language.
+
+PL/SQL is a extension of SQL and contains following features.
+
+1) We can achieve programming features like control statements, loops and etc.
+
+2) It reduces network traffic.
+
+3) We can display custom error messages by using the concept of exception handling.
+
+4) We can perform related operations by using the concept of triggers.
+
+5) It saves the source code permanent to database for repeated execution.
+
+PL/SQL block
+============
+A PL/SQL program is also known as PL/SQL block.
+
+syntax:
+-------
+	DECLARE 
+	-
+	-	-- Declaration section 
+	-
+	BEGIN
+	-
+	-	-- Executable section 
+	-
+	EXCEPTION
+	-
+	-	-- Exception section 	
+	-
+	END;
+	/
+
+Declaration section 
+-------------------
+Declaration section is used to declare variables, cursors, exceptions and etc.
+
+It is optional section.
+
+
+Executable section
+-------------------
+Execution section contains actual code of a program.
+
+It is mandatory section.
+
+
+EXCEPTION section
+------------------
+It contains lines of code which is executed when exception is raised.
+
+It is optional section.
+
+
+
+To see the output in PL/SQL we need on server output environment.
+
+ex:
+	SQL> set   serveroutput   on 
+
+
+
+Q) Write a PL/SQL program to display Hello World?
+
+	BEGIN
+	DBMS_OUTPUT.PUT_LINE('Hello World');
+	END;
+	/
+
+	Here DBMS_OUTPUT is a package name.
+	Here PUT_LINE is a procedure name.
+	Here '/' is used to submit the PL/SQL program into database.
+
+Q) Write a PL/SQL program to perform sum of two numbers?
+
+	DECLARE 
+	A number;
+	B number;
+	C number;
+	BEGIN
+	A:=10;
+	B:=20;
+	C:=A+B;
+	DBMS_OUTPUT.PUT_LINE(C);
+	END;
+	/
+
+
+Declaration and Initialization using single line
+------------------------------------------------
+
+	DECLARE 
+	A number:=10;
+	B number:=20;
+	C number:=A+B;
+	BEGIN
+	DBMS_OUTPUT.PUT_LINE(C);
+	END;
+	/
+
+
+To read dynamic values we need to use '&' symbol.
+
+ex:
+---
+	DECLARE 
+	A number(3);
+	B number(3);
+	C number(6);
+	BEGIN
+	A:=&a;
+	B:=&b;
+	C:=A+B;
+	DBMS_OUTPUT.PUT_LINE('Sum of two numbers is ='||C);
+	END;
+	/
+
+Using PL/SQL we can perform DML operations.
+
+
+Q) Write a PL/SQL program to insert a record into student table?
+
+	DECLARE 
+	L_sno  number(3);
+	L_sname varchar2(10);
+	L_sadd  varchar2(12);
+	BEGIN
+	L_sno:=&sno;
+	L_sname:='&sname';
+	L_sadd:='&sadd';
+	insert into student values(L_sno,L_sname,L_sadd);
+	DBMS_OUTPUT.PUT_LINE('Please check the table');
+	END;
+	/ 
+	
+	
+Q) Write a PL/SQL program to update student name based on student number?
+
+
+	DECLARE 
+	L_sname varchar2(10);
+	L_sno number(3);
+	BEGIN
+	L_sname:='&sname';
+	L_sno:=&sno;
+	update student set sname=L_sname where sno=L_sno;
+	DBMS_OUTPUT.PUT_LINE('Please check the table');
+	END;
+	/	
+
+Assignment
+==========
+Q) Write a PL/SQL program to delete student record based on student number?
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

@@ -1,0 +1,575 @@
+Q) Rohan is a kid who has just learned about creating words from alphabets. He has written some words in the notepad of his father's laptop. Now his father want to find the longest word written by Rohan using computer program. Write a program to find the longest string in a given list of Strings ?
+
+input:
+	yes no number
+
+output:
+	number
+
+ex:
+---
+class Test  
+{
+	public static void main(String[] args)       
+	{
+		String str="yes no number";
+		String[] sarr=str.split(" ");
+		
+		int len=sarr[0].length();
+		
+		String longest="";
+		
+		for(String s:sarr)
+		{
+			if(s.length()>len)
+			{
+				len=s.length();
+				longest=s;
+			}
+		}
+		
+		System.out.println(longest);
+	}
+}
+
+
+Pattern Matching operators
+===========================
+Pattern matching operators are used to select the letters from database table.
+
+Pattern matching operators take the support of like keyword.
+
+We have two pattern matching operators.
+
+1) Percentage (%)
+
+2) Underscore (_)
+
+1) Percentage (%)
+-----------------
+
+Q) Write a query to display employees information whose name starts with 'A' letter?
+
+	select * from emp where ename like 'A%';
+
+
+
+Q) Write a query to display employees information whose name ends with 'n' letter?
+
+	select * from emp where ename like '%n';
+
+
+
+Q) Write query to display employees information whose name having middle letters as 'l'?
+
+	select * from emp where ename like '%l%';
+
+2) Underscore (_)
+-----------------
+
+Q) Write a query to display employees information whose second letter is 'a'?
+
+	select * from emp where ename like '_a%';
+
+
+Q) Write a query to display employees information whose second last letter is 'r'?
+
+	select * from emp where ename like '%r_';
+
+
+Q) Write a query to display employees information whose third letter is 'l'?
+
+	select * from emp where ename like '__l%';
+
+
+DDL commands
+============
+1) create  - tables 
+
+2) alter   - columns 
+
+3) drop    - tables 
+
+4) truncate - records/rows
+
+5) rename  - tables 
+
+
+2) alter command
+-----------------
+Using alter command we can perform following activities very easily.
+
+i) Adding the new columns 
+
+ii) Modifying the columns
+
+iii) Dropping the columns 
+
+iv) Renaming the columns  
+
+i) Adding the new columns 
+---------------------------
+Using alter command we can add new columns in a existing table.
+
+syntax:
+------
+	alter table <table_name> ADD (col datatype(size));
+
+ex:
+	alter table student ADD (pincode number(8),state varchar2(10));	
+
+	update student set pincode=500036 where sno=101;
+
+
+ii) Modifying the columns
+--------------------------
+Using alter command we can modify the existing columns.
+
+syntax:
+-----
+	alter table <table_name> modify (col datatype(size));
+
+We can change size of a column only when existing values are fit into new size.
+
+ex:
+---
+	desc student;
+	alter table student modify (pincode number(10));
+	desc student;
+
+We can change datatype of a column only if that column is empty.
+
+ex:
+--
+	alter table student modify (state number(10));
+
+
+
+iii) Dropping the columns 
+---------------------------
+Using alter command we can remove the existing columns.
+
+syntax:
+----
+	alter table <table_name> DROP (col1,col2,...,colN);
+
+ex:
+	alter table student DROP (pincode,state);
+
+
+iv) Renaming the columns
+------------------------
+Using alter command we can rename the existing columns.
+
+syntax:
+-----
+	alter table <table_name> rename column <old_name> to <new_name>;
+
+ex:
+	alter table student rename column  sadd to city;
+	
+	alter table emp rename column  esal to dailywages;
+
+	alter table emp rename column job to designation;
+
+
+3) drop  command
+----------------
+It is used to drop the table from database.
+
+syntax:
+------
+	drop table <table_name>;
+
+ex:
+	drop table student;
+	drop table emp;
+	drop table dept;
+
+
+4) truncate command
+-------------------
+It is used to delete the records permanently from database.
+
+syntax:
+------
+	truncate table table_name;
+ex:
+	truncate table emp;	
+	truncate table dept;
+	truncate table student;
+
+
+Q) What is the difference between delete and truncate command?
+
+delete						truncate 
+------------------				--------------
+It deletes the records temperory.		It deletes the records permanently.
+
+We can rollback the data.			We can't rollback the data.
+
+Where clause can be used.			Where clause can't be used.
+
+It is a DML command.				It is a DDL command.
+
+
+5) rename command
+------------------
+It is used to rename the table name.
+
+syntax:
+------
+	rename <old_name> to <new_name>;
+
+ex:
+	rename emp to employee;
+	rename student to students;
+	rename dept to department;
+
+
+Duplicate table or copy of a table
+===================================
+
+Using create and select command we can create a duplicate table or copy of a table.
+
+ex:
+--
+	create table employee as select * from emp;
+
+	create table employee as select eid,ename,esal from emp;
+
+	create table employee as select * from emp where deptno=10;
+
+	create table employee as select * from emp where deptno<>10;
+
+	create table employee as select * from emp where eid(201,202,203);
+
+	create table employee as select * from emp where ename like 'A%';
+
+	create table employee as select * from emp where esal between 5000 AND 20000;
+
+	create table employee as select * from emp where comm is null;
+
+
+
+cl scr
+======
+It is used to clear the output of SQL command prompt.
+
+ex:
+	cl  scr 
+
+
+
+Functions 
+==========
+Functions are used to manipulate the data items and give result.
+
+We have two types of functions in SQL.
+
+1) Group Functions / Multiple Row Functions
+
+2) Scalar Functions / Single Row Functions 
+
+1) Group Functions
+------------------
+Group functions are applicable for multiple rows.
+
+We have following list of group functions.
+
+ex:
+	sum(), avg(), max(), min(), count(*) and count(express).
+
+
+Q) Write a query to display sum of salary of each employee?
+
+	select  sum(esal) from emp;
+
+
+Q) Write a query to display average salary of each employee?
+
+	select avg(esal) from emp;
+
+
+Q) Write a query to display highest salary from employee table?
+
+	select max(esal) from emp;
+
+
+Q) Write a query to display least salary from employee table?
+
+	select min(esal) from emp;
+
+
+Q) What is the difference between count(*) and count(exp) ? 
+
+count(*)
+---------
+It will return number of records present in a database table.
+
+It will include null records.
+
+ex:
+--
+	select count(*) from emp; // 6 
+	select count(*) from dept; //4 
+
+count(exp) ?
+-------------
+It will return number of values present in a column.
+
+It will not include null values.
+
+ex:
+	select count(comm) from emp; // 5
+
+	select count(eid) from emp; // 6 
+
+
+Dual table
+==========
+Dual tale is a dummy table.
+
+It is used to perform arithmetic operations and to see the current system date.
+
+It contains one row and one column.
+
+ex:
+	select 10+20 from dual; // 30
+
+	select 10*20 from dual; // 200
+
+	select sysdate from dual; 
+
+	select current_date from dual;
+
+
+
+2) Scalar Functions
+--------------------
+We have four types of scalar functions.
+
+i) character functions 
+
+ii) number functions 
+
+iii) date functions 
+
+iv) conversion functions 
+
+
+i) character functions 
+-----------------------
+upper()
+-------
+	It is used to convert in uppercase.
+	ex:
+		select upper('oracle training') from dual;
+
+lower()
+-------
+	It is used to convert in lowercase.
+	ex:
+		select lower('ORACLE TRAINING') from dual; 
+
+initcap()
+---------
+	It is used to display the string with initial letter capital.
+	ex:
+		select initcap('oracle training') from dual;
+
+lpad()
+-------
+	It is used to pad the characters to left side.
+	ex:
+		select lpad('oracle',10,'z') from dual; // zzzzoracle		
+
+rpad()
+-------
+	It is used to pad the characters to right side.
+	ex:
+		select rpad('oracle',10,'z') from dual; // oraclezzzz
+
+ltrim()
+--------
+	It is used to trim the characters from left side.
+	ex:
+		select ltrim('zzoraclezz','z') from dual; // oraclezz
+
+rtrim()
+------
+	It is used to trim the characters from right side.
+	ex:
+		select rtrim('zzoraclezz','z') from dual; // zzoracle
+
+trim()
+-----
+	It is used to trim the characters from both the side.
+	ex:
+		select trim('z' from 'zzoraclezz') from dual; // oracle 
+
+concat() 
+--------
+	It is used to concatinate two strings.
+	ex:
+		select concat('mega','star') from dual; // megastar
+
+		select concat(concat('stylish','star'),'Allu') from dual;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

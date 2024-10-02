@@ -1,0 +1,494 @@
+JDBC
+======
+As if now it is known as trademark.
+
+But earlier it is called Java Database Connectivity.
+
+RAM is a temperory storage device or medium.
+
+During the program execution our data will store inside RAM.
+
+Once the program execution is completed we will loss the data.
+
+To overcome this limitation , we are making our applications writing the data in a file or database software.
+
+Files and database softwares act like a permanent storage or medium.
+
+Persistence
+============
+The process of storing and managing the data for a long period of time is called persistence.
+
+
+Persistence Terminologies
+==========================
+1) Persistence store 
+--------------------
+	It is a place where we can store and manage the data for a long period of time.
+	ex:
+		Files 
+		Database softwares.
+
+2) Persistence data 
+------------------
+	A data of a persistence store is called persistence data.
+	ex:
+		Records 
+		Tables
+
+
+3) Persistence operation
+-------------------------
+	Insert, Update , Delete, Create, Select and etc are called persistence operations.
+	In the realtime this operation is also known as CURD operation, CRUD operation or 
+	SCUD operation.
+	ex:
+		C - create		S - select   
+		U - update 		C - create 
+		R - read		U - update 
+		D - delete 		D - delete 
+
+
+4) Persistence logic
+----------------------
+	A logic which is capable to perform persistence operations is called persistence logic.
+	ex:
+		IOStream
+		JDBC Code 
+		Hibernate Code 
+		 
+5) Persistence technology 
+------------------------
+	A technology which is used to develop persistence logics is called persistence technology.
+	ex:
+		JDBC
+		Hibernate
+		and etc.
+
+
+Q) What is JDBC?
+
+JDBC is a persistence technology which is used to develop persistence logics having the capability to perform persistence operations on persistence data of a persistence store.
+
+
+Note:
+-----
+					   IOStream 
+		JavaApp	---------------------------------------------- Files 
+			   	Serialization/Deserialization
+
+
+					   JDBC Code	
+		JavaApp	---------------------------------------------- Database s/w 
+
+
+Serialization
+=============
+	The process of storing object data into a file is called serialization.
+
+	The process of converting object state to file state is called serialization.
+
+	Diagram: jdbc1.1
+
+Deserialization
+===============
+	The process of taking the data from file and representing an object is called deserialization.
+	
+	The process of converting file state to object state is called deserialization.
+
+	Diagram: jdbc1.2		
+
+
+Limitations with files as a persistence store
+==============================================
+> It stores limited amount of data.
+
+> There is no security.
+
+> Fetching the data with multiple conditions is not possible.
+
+> It does not show an application with relationships.
+
+> It does not allow us to apply contraints.
+
+> Updation and Deletion of data can't be done directly.
+
+> Merging and comparision of data can't be done easily.
+
+
+
+Advantages of database as a persistence store
+=============================================
+> It stores unlimited amount of data.
+
+> There is a security.
+
+> Fetching the data with multiple condition is possible.
+
+> It shows an application with relationships.
+
+> It allows us to apply constraints.
+
+> Updation and Deletion of data can be done directly.
+
+> Merging and comparision of data can be done easily.
+
+
+
+Every JDBC Application is a two tier application where java with JDBC code act like a frontend/tier1/Layer1 and database software acts like a backend/tier2/layer2.
+
+Enduser is a non-technical person. He can't prepare and execute SQL query in a database software.He depends upon frontend developers having the capability to do that work for him.
+
+Diagram: jdbc1.3
+
+
+JDBC Driver
+===========
+It acts like a bridge between java application and database software.
+
+It is used to convert java instructions to database instructions and vice versa.
+
+Diagram: jdbc1.4
+
+
+ODBC Driver 
+============
+VBScript, D2K, Perl and etc uses ODBC driver to interact with database software.
+
+Diagram: jdbc1.5
+
+
+ODBC drivers developed in C language by taking the support pointers. Java does not support pointers.
+To overcome this limitation Sun Micro System introduced JDBC Driver exclusively.
+
+Q) Types of drivers in JDBC?
+
+We have four types of JDBC drivers.
+
+1) Type1 JDBC Driver / JDBC-ODBC Bridge Driver 
+
+2) Type2 JDBC Driver / Native API Driver 
+
+3) Type3 JDBC Driver / Net Protocol Driver 
+
+4) Type4 JDBC Driver / Native Protocols Driver 
+
+
+Q) What is JDBC?
+
+JDBC is a open technology given by Sun Micro System having set of rules and guidelines to develop JDBC drivers to interact with multiple database softwares.
+
+
+Q) What is ODBC?
+
+ODBC is a open technology given by Xopen company having set of rules and guidelines to develop ODBC
+drivers to interact with multiple database softwares.
+
+
+To use any JDBC Driver we need to register with DriverManager service.
+
+Every JDBC application contains one built-in service called DriverManager service.
+
+
+Class.forName()
+===============
+It is always recommanded to register JDBC driver with DriverManager service.
+
+It is used to load driver class but it won't create an object.
+
+ex:
+	Class.forName("Driver-Class-Name");
+
+
+Connection object
+==================
+Connection is an interface which is present in java.sql package.
+
+It is an object of underlying supplied java class which implements java.sql.Connection interface.
+
+To perform any operation in a database we have to establish the connection.
+
+Once work with database is completed we have to close the connection.
+
+ex:
+	Connection con;
+
+
+DriverManager.getConnection()
+=============================
+DriverManager is a class which is present in java.sql package.
+
+A getConnection() method is used to interact with database software and returns one JDBC Connection object represent connectivity between java application and database software.
+
+ex:
+	Connection con=DriverManager.getConnection("url");
+
+
+Statement object
+==================
+Statement is an interface which is present in java.sql package.
+
+It an object of underlying supplied java class which implements java.sql.Statement interface.
+
+It acts like a vehicle between java application and database software.
+
+It is used to sends and executes SQL query in database software.
+
+ex:
+	Statement st=con.createStatement();
+
+
+ResultSet object
+================
+ResultSet is an interface which is present in java.sql package.
+
+It contains two positions.
+
+1) BFR (Before First Record/Row)
+
+2) ALR (After Last Record/Row)
+
+By default record pointer points to BFR position only.
+
+rs.next()
+=========
+It is used to move to next position from current position. 
+
+If next position is a record then it will return true.
+
+If next position is ALR then it will return false.
+
+Every record ResultSet having 1 as base index and every column of record ResultSet having 1 as base index.
+
+In order to read the data from record ResultSet we need to use rs.getXxx() methods with index numbers or column names.
+
+Here rs.getXxx() method means i.e rs.getInt(), rs.getString(), rs.getFloat(), rs.getDouble() and etc.
+
+Diagram: jdbc1.6
+
+
+Types of queries in JDBC
+=========================
+According to JDBC point of view we have two types of queries.
+
+1) Select Queries
+
+2) Non-Select Queries
+
+1) Select Queries
+--------------
+Select queries give bunch of records from database software.
+ex:
+	select * from student;
+
+A JDBC Statement object gave executeQuery() method to execute select queries.
+ex:
+	ResultSet rs=st.executeQuery("select * from student");
+
+
+
+2) Non-Select Queries
+-----------------------
+Non-select queries give numeric value representing number of records effected in a database table.
+ex:
+	delete from student; // 3 
+
+A JDBC Statement object gave executeUpdate() method to execute non-select queries.
+
+ex:
+	int result=st.executeUpdate("delete from student");
+
+
+Type4 JDBC Driver / Native Protocol 
+===================================
+
+Driver class :		oracle.jdbc.driver.OracleDriver
+			------------------ -------------
+				pkg name 	Driver-classname
+
+
+Driver url :		jdbc:oracle:thin:@localhost:1521:XE
+			-----------------  |         |   |
+			sub protocol 	hostname portno  logical_database_name
+
+
+Database username : 	system
+
+Database password : 	admin 
+
+
+
+Interview Question
+====================
+
+
+Jagged Array
+=============
+Jagged array is also known as array of arrays.
+
+It's a multidimensional array where each row can have a different length.
+
+Diagram: jdbc1.7
+
+ex:
+
+
+import java.util.Scanner;
+class Test 
+{
+	public static void main(String[] args)
+	{
+		Scanner sc=new Scanner(System.in);
+
+		int[][] arr=new int[3][];
+
+		arr[0]=new int[3];
+		arr[1]=new int[4];
+		arr[2]=new int[2];
+
+		for(int i=0;i<arr.length;i++)
+		{
+			for(int j=0;j<arr[i].length;j++)
+			{
+				System.out.println("Enter the element of arr["+i+"]["+j+"] :");
+				arr[i][j]=sc.nextInt();
+			}	
+		}
+
+		//reading 
+		for(int[] a:arr)
+		{
+			for(int i:a)
+			{
+				System.out.print(i+" ");
+			}
+			//new line
+			System.out.println();
+		}
+	}
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

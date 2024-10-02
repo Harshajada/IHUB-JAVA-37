@@ -1,0 +1,406 @@
+Implicit objects 
+=================
+Object which can be used directly without any configuration is called implicit object.
+
+Implicit object created by the web container which is available for every jsp page.
+
+JSP gives 9 implicit objects as follow.
+
+ex:
+	object			Type
+	-------			-------
+	out			JspWriter 
+	request 		HttpServletRequest 
+	response 		HttpServletResponse 
+	config			ServletConfig 
+	application		ServletContext
+	session			HttpSession 
+	pageContext 		pageContext
+	page			Object 
+	exception 		Throwable
+
+response 
+========
+A response is a implicit object of type HttpServletResponse.
+
+A response object created by the web container.
+
+It is used to send or add response and redirect the response or error details to resources.
+
+Deployment Directory Structure
+------------------------------
+JspApp11
+|
+|---Java Resources
+|
+|---WebContent
+	|
+	|---index.html
+	|---process.jsp
+	|
+	|---WEB-INF
+		|
+		|---web.xml  
+Note:
+-----
+In above application we need add "servlet-api.jar" file in project build path.		
+
+index.html
+----------
+<center>
+	<h1>
+		<a href="process.jsp"> Facebook </a>
+	</h1>
+</center>
+
+
+web.xml
+--------
+<?xml version="1.0" encoding="UTF-8"?>
+<web-app xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://java.sun.com/xml/ns/javaee" xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_3_0.xsd" id="WebApp_ID" version="3.0">
+  
+  <welcome-file-list>
+  	<welcome-file>index.html</welcome-file>
+  </welcome-file-list>
+  
+</web-app>
+
+process.jsp
+------------
+
+<%
+	response.sendRedirect("http://www.facebook.com/login");
+%>
+
+Request url
+-----------
+	http://localhost:2525/JspApp11/
+
+
+config
+========
+A config is a implicit object of type ServletConfig.
+
+A config object is created by the web container.
+
+It is used to read initialized parameters of a perticular jsp.
+
+
+Deployment Directory Structure
+------------------------------
+JspApp12
+|
+|---Java Resources
+|
+|---WebContent
+	|
+	|---index.html
+	|---process.jsp
+	|
+	|---WEB-INF
+		|
+		|---web.xml  
+Note:
+-----
+In above application we need add "servlet-api.jar" file in project build path.	
+
+index.html
+---------
+<center>
+	<h1>
+		<a href="test"> click Here </a>
+	</h1>
+</center>
+
+web.xml
+--------
+<?xml version="1.0" encoding="UTF-8"?>
+<web-app xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://java.sun.com/xml/ns/javaee" xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_3_0.xsd" id="WebApp_ID" version="3.0">
+ 
+ <servlet>
+ 	<servlet-name>ABC</servlet-name>
+ 	<jsp-file>/process.jsp</jsp-file>
+ 	<init-param>
+ 		<param-name>driver</param-name>
+ 		<param-value>oracle.jdbc.driver.OracleDriver</param-value>
+ 	</init-param>
+ </servlet>
+ 
+ <servlet-mapping>
+ 	<servlet-name>ABC</servlet-name>
+ 	<url-pattern>/test</url-pattern>
+ </servlet-mapping>
+ 
+ <welcome-file-list>
+ 	<welcome-file>index.html</welcome-file>
+ </welcome-file-list>
+ 
+</web-app>
+
+
+process.jsp
+-----------
+<center>
+<h1>
+<%
+	String value=config.getInitParameter("driver");	
+	out.println(value);
+%>
+</h1>
+</center>
+
+Request url
+----------
+	http://localhost:2525/JspApp12/
+
+application
+----------------
+A application is a implicit object of type ServletContext.
+
+A application object created by the web container.
+
+It is used to read configuration information from web.xml file.
+
+Deployment Directory Structure
+------------------------------
+JspApp13
+|
+|---Java Resources
+|
+|---WebContent
+	|
+	|---index.html
+	|---process.jsp
+	|
+	|---WEB-INF
+		|
+		|---web.xml  
+Note:
+-----
+In above application we need add "servlet-api.jar" file in project build path.	
+
+index.html
+----------
+<center>
+	<h1>
+		<a href="test"> click Here </a>
+	</h1>
+</center>
+
+web.xml
+--------
+<?xml version="1.0" encoding="UTF-8"?>
+<web-app xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://java.sun.com/xml/ns/javaee" xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_3_0.xsd" id="WebApp_ID" version="3.0">
+ 
+ <servlet>
+ 	<servlet-name>ABC</servlet-name>
+ 	<jsp-file>/process.jsp</jsp-file>
+ </servlet>
+ 
+ <servlet-mapping>
+ 	<servlet-name>ABC</servlet-name>
+ 	<url-pattern>/test</url-pattern>
+ </servlet-mapping>
+ 
+ <context-param>
+ 		<param-name>driver</param-name>
+ 		<param-value>oracle.jdbc.driver.OracleDriver</param-value>
+ </context-param>
+ 
+ <welcome-file-list>
+ 	<welcome-file>index.html</welcome-file>
+ </welcome-file-list>
+ 
+</web-app>
+
+process.jsp
+----------
+<center>
+<h1>
+<%
+	String value=application.getInitParameter("driver");	
+	out.println(value);
+%>
+</h1>
+</center>
+
+Request url
+--------
+	http://localhost:2525/JspApp13/test
+
+
+
+session
+===========
+A session is a implicit object of type HttpSession.
+
+A session object is created by the web container.
+
+It is used to add, remove and get attributes from session.
+
+Deployment Directory Structure
+------------------------------
+JspApp14
+|
+|---Java Resources
+|
+|---WebContent
+	|
+	|---form.html
+	|---first.jsp
+	|---second.jsp
+	|
+	|---WEB-INF
+		|
+		|---web.xml  
+Note:
+-----
+In above application we need add "servlet-api.jar" file in project build path.	
+
+form.html
+---------
+
+<form action="first.jsp">
+	
+	Name: <input type="text" name="t1"/> <br>
+	
+	<input type="submit" value="submit"/>
+	 
+</form>
+
+web.xml
+-------
+<?xml version="1.0" encoding="UTF-8"?>
+<web-app xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://java.sun.com/xml/ns/javaee" xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_3_0.xsd" id="WebApp_ID" version="3.0">
+  
+  
+  <welcome-file-list>
+  	<welcome-file>form.html</welcome-file>
+  </welcome-file-list>
+  
+</web-app>
+
+first.jsp
+---------
+
+<%
+	String name = request.getParameter("t1");
+	out.println("Welcome :"+name);
+	
+	session.setAttribute("pname", name);
+%>
+<br>
+<a href="second.jsp"> click on Second.jsp </a>
+
+second.jsp
+------------
+
+<%
+	String name=(String)session.getAttribute("pname");
+	out.println("Hey! :"+name);
+%>
+
+Request url
+------------
+	http://localhost:2525/JspApp14/
+
+
+
+pageContext
+=============
+A pageContext is an implicit object of type pageContext.
+
+A pageContext object is created by the web container.
+
+It is used to add, remove and get attributes from session using following scopes.
+
+We have four scopes in JSP.
+
+1) page scope (default scope)
+
+2) Request scope 
+
+3) Session scope 
+
+4) Application scope 
+
+
+Deployment Directory Structure
+------------------------------
+JspApp15
+|
+|---Java Resources
+|
+|---WebContent
+	|
+	|---form.html
+	|---first.jsp
+	|---second.jsp
+	|
+	|---WEB-INF
+		|
+		|---web.xml  
+Note:
+-----
+In above application we need add "servlet-api.jar" file in project build path.	
+
+form.html
+---------
+
+<form action="first.jsp">
+	
+	Name: <input type="text" name="t1"/> <br>
+	
+	<input type="submit" value="submit"/>
+	 
+</form>
+
+web.xml
+-------
+<?xml version="1.0" encoding="UTF-8"?>
+<web-app xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://java.sun.com/xml/ns/javaee" xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_3_0.xsd" id="WebApp_ID" version="3.0">
+  
+  
+  <welcome-file-list>
+  	<welcome-file>form.html</welcome-file>
+  </welcome-file-list>
+  
+</web-app>
+
+first.jsp
+---------
+
+<%
+	String name = request.getParameter("t1");
+	out.println("Welcome :"+name);
+	
+	pageContext.setAttribute("pname", name,pageContext.SESSION_SCOPE);
+%>
+<br>
+<a href="second.jsp"> click on Second.jsp </a>
+
+second.jsp
+------------
+
+<%
+	String name=(String)pageContext.getAttribute("pname",pageContext.SESSION_SCOPE);
+	out.println("Hey Bro! :"+name);
+%>
+
+Request url
+------------
+	http://localhost:2525/JspApp15/
+
+
+
+
+
+
+
+
+
+
+
+
+
+ 		

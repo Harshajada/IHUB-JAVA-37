@@ -1,0 +1,329 @@
+ii) number function
+=====================
+abs()
+-----
+	It returns absoluate value.
+	ex:
+		select abs(-4) from dual; // 4 
+sqrt()
+------	
+	It returns square root value.
+	ex:
+		select sqrt(25) from dual;
+		select sqrt(24) from dual;
+
+power(A,B)
+----------	
+	It returns power value.
+	ex:
+		select power(5,3) from dual; 
+
+ceil()
+------
+	It returns ceil value.
+	ex:
+		select ceil(10.1) from dual; // 11 
+		select ceil(7.8) from dual; // 8
+
+floor()
+-------
+	It retursn floor value.
+	ex:
+		select floor(10.6) from dual; //10
+		select floor(5.2) from dual; // 5 
+
+round()
+-------
+	It will return nearest value.
+	ex:
+		select round(10.5) from dual; // 11
+		select round(10.4) from dual; // 10
+		
+
+trunc()
+-------	
+	It removes decimals.
+	ex:
+		select trunc(10.56) from dual; // 10 
+		select trunc(16.78) from dual; // 16	
+
+greatest()
+---------
+	It returns greatest value.
+	ex:
+		select greatest(10,20,30) from dual;	
+
+least()
+------
+	IT returns least value.
+	ex:
+		select least(10,20,30) from dual;
+
+
+Working with Date values
+=========================
+Every database software date values in difference date patterns.
+
+ex:
+	oracle  - 	dd-MMM-yy
+	MySQL	-	yyyy-MM-dd	
+
+
+emp1 table
+-----------
+drop table emp1;
+
+create table emp1(eid number(3),ename varchar2(10),edoj date);
+
+insert into emp1 values(201,'Alan','01-JAN-24');
+
+insert into emp1 values(202,'Jose',sysdate);
+
+insert into emp1 values(203,'Mark',current_date);
+
+commit;
+
+
+
+iii) Date functions
+====================
+
+ADD_MONTHS()
+-----------
+	It is used to add the months in a given date.
+	ex:
+		select ADD_MONTHS('01-JAN-24',5) from dual;
+
+MONTHS_BETWEEN()
+----------------
+	It will return number of months between two given dates.
+	ex:
+		select MONTHS_BETWEEN('01-JAN-24','01-AUG-24') from dual;
+
+		select MONTHS_BETWEEN('01-JAN-24','15-AUG-24') from dual;
+
+		select ABS(MONTHS_BETWEEN('01-JAN-24','15-AUG-24')) from dual;	
+
+NEXT_DAY()
+--------
+	It will return the date of a given day in a week.
+	ex:
+		select NEXT_DAY(sysdate,'sunday') from dual;
+
+		select NEXT_DAY(sysdate,'tuesday') from dual;
+
+LAST_DAY() 
+---------
+	It will return last date of a month.
+	ex:
+		select LAST_DAY(sysdate) from dual;
+
+		select LAST_DAY('25-SEP-24') from dual;
+
+iv) Conversion functions
+========================
+Conversion function is used to convert from datatype to another datatype.
+ex:
+	TO_CHAR() 
+
+We have two pseudo for TO_CHAR() function.
+
+a) number to_char()
+-------------------
+	It supports '9' in digits, dollar and euros symbol.
+	ex:
+		select eid,ename,esal from emp;
+	
+		select eid,ename,TO_CHAR(esal,'9,999') from emp;
+		
+		select eid,ename,TO_CHAR(esal,'99,999') from emp;
+
+		select eid,ename,TO_CHAR(esal,'$99,999') from emp;
+
+		select eid,ename,TO_CHAR(esal,'$99,999') as ESAL from emp;	
+	
+
+b) date to_char() 
+----------------
+	ex:
+		select TO_CHAR(sysdate,'dd-MM-yyyy') from dual;
+
+		select TO_CHAR(sysdate,'yyyy-MM-dd') from dual;
+
+		select TO_CHAR(sysdate,'year') from dual;
+
+		select TO_CHAR(sysdate,'month') from dual;
+		
+		select TO_CHAR(sysdate,'day') from dual;
+
+		select TO_CHAR(sysdate,'yyyy') from dual;
+
+		select TO_CHAR(sysdate,'MM') from dual;
+		
+		select TO_CHAR(sysdate,'dd') from dual;
+
+		select TO_CHAR(sysdate,'HH:MI:SS') from dual;
+
+		select TO_CHAR(sysdate,'dd-MM-yyyy HH:MI:SS') from dual;
+
+
+
+Interview queries
+-----------------
+
+Q) Write a query to display employee information from employee table?
+
+	select eid as id,
+		upper(ename) as ename,
+			TO_CHAR(esal,'$99,999') as esal,
+				deptno,
+				  lower(job) as job,
+					comm
+			  			from emp;
+
+userlist table
+==============
+drop table userlist;
+
+create table userlist(uname varchar2(10),pwd varchar2(10));
+
+insert into userlist values('raja','rani');
+
+insert into userlist values('king','kingdom');
+
+commit;
+
+
+Q) Write a query to check username and password is valid or not?
+
+	select count(*) from userlist where uname='raja' and pwd='rani';// 1 
+
+	select count(*) from userlist where uname='raja' and pwd='rani2'; // 0 
+
+
+Group by clause
+===============
+Group by clause is used to divided the rows into multiple groups so that we can apply group functions.
+
+A column which we used in group by clause , same column name we need too use in select clause.
+
+ex:
+
+Q) Write a query to display sum of salary of each department?
+
+	select sum(esal),deptno from emp group by deptno;
+
+
+Q) Write a query to display minimum salary of each job?
+
+	select min(esal),job from emp group by job;
+
+
+Q) WRite a query to display highest salary of each department?
+
+	select max(esal),deptno from emp group by deptno;
+
+
+Q) Write a query to display average salary of each job?
+
+	select avg(esal),job from emp group by job;
+
+
+
+Having clause
+==============
+Having clause is used to filter the rows in group by clause.
+
+Having clause must place after group by clause.
+
+
+Q) Write a query to display sum of salary of each department whose sum of salary is greater 
+then 30000?
+
+	select sum(esal),deptno from emp group by deptno having sum(esal)>30000;
+
+
+
+Q) Write a query to display minimum salary of each job where minimum salary is greater then equals to 10000?
+
+	select min(esal),job from emp group by job having min(esal)>=10000;
+
+
+
+Order by clause
+===============
+Order by clause is used to arrange the rows in a table.
+
+By default it will arrange in ascending order.
+
+ex:
+	select * from emp order by eid;	
+
+	select * from emp order by eid desc;	
+
+	select * from emp order by ename;
+
+	select * from emp order by ename desc;
+
+
+
+Q) Write a query to display minimum salary of each job where minimum salary is greater then equals to 10000?
+
+	select min(esal),deptno from emp group by deptno having min(esal)>=10000 order by deptno;
+
+
+	select min(esal),deptno from emp group by deptno having min(esal)>=10000 order by deptno desc;
+
+
+Integrity Constraints
+=====================
+Constraints are the rules which are applied on the tables.
+
+Using constraints we can achieve accuracy and quality of data.
+
+We have following list of constraints in SQL.
+
+1) NOT NULL 
+
+2) UNIQUE 
+
+3) PRIMARY KEY 
+
+4) FOREIGN KEY 
+
+5) CHECK 
+
+Constraints are created at two levels.
+
+i) column level 
+
+ii) table level 
+
+
+Assignment
+===========
+Write a java program to decode the string?
+
+input:
+	AAJF
+
+output:
+	1106 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

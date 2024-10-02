@@ -1,0 +1,286 @@
+Views
+======
+It is a virtual representation of a data from one or more then one table.
+
+A table which is used to create a view is called base table or above table.
+
+syntax:
+------
+	create view <view_name> as select stmt;
+
+ex:
+	create view v1 as select * from emp;
+
+View does not consumes the memory.
+
+View does not have data.
+
+View will get the data from base table when we execute select command.
+
+We have following list of views.
+
+1) Simple view 
+
+2) Complex view 
+
+3) With read only view 
+
+4) With check option view 
+
+5) Materialized view
+
+
+1) Simple view 
+-----------
+If a view is created by using one base table is called simple view.
+
+DML operations are allowed in simple view.
+
+ex:
+	create view v1 as select * from student;
+
+	select  * from v1; // 3 records 
+
+	delete from v1; // 3 records deleted 
+
+	select * from student; // no rows selected
+	
+
+
+2) Complex view 
+---------------
+If a view is created by using more then one base table is called complex view.
+
+In complex view DML operations are not allowed.
+
+ex:
+	create view v2 as select e.eid,e.ename,e.esal,d.dname,d.dloc from emp e,dept d
+			where (e.deptno=d.deptno);
+
+
+	select * from v2;
+
+	delete from v2; //cannot delete from view
+
+
+
+3) With read only view 
+----------------------
+If we create a view by using one base table and DML operation are not allowed then we need to use with read only view.
+
+ex:
+	create view v3 as select * from emp with read only;
+
+	select * from v3;
+
+	delete from v3; //cannot delete from view
+
+
+
+4) With check option view 
+-----------------------
+If we create a view by using one base table and DML operations are allowed only when condition is true then we need to use with check option view.
+
+ex:
+	create view v4 as select * from emp where deptno=30 with check option;
+
+	select * from v4;
+
+	insert into v4 values(209,'Julie',26000,70,'Salesman',500); // view WITH CHECK OPTION
+
+	insert into v4 values(209,'Julie',26000,30,'Salesman',500);  //inserted
+
+
+5) Materialized view
+---------------------
+To create a materialized view a table must have primary key.
+
+ex:
+	alter table emp add primary key(eid);
+
+	create materialized view v5 as select * from emp;
+
+	select * from v5; // 9 records 
+
+	select * from emp; // 9 records 
+
+	delete from emp where eid IN (208,209); // 2 records deleted
+
+	select * from v5; // 9 records 
+
+	select * from emp; // 7 records 
+	
+To get updated data from base table we need to refresh the view.
+
+ex:
+	exec  DBMS_SNAPSHOT.REFRESH('v5');
+
+	DBMS_SNAPSHOT is a package name 
+	REFRESH is a procedure name
+
+	select * from v5; // 7 records 
+
+	select * from emp; // 7 records 
+
+
+Q) Write a query to see the list of views present in database?
+
+	select view_name from user_views;
+
+
+Q) Write a query to drop the view.
+	
+	drop view v1;
+	drop view v2;
+	drop view v3;
+	drop view v4;	
+	drop materialized view v5;
+
+
+Merge command
+=============
+Merge command is a combination of insert and update command.
+
+student10 table
+----------------
+drop table student10;
+
+create table student10(sno number(3),sname varchar2(10),sadd varchar2(12));
+
+insert into student10 values(101,'raja','hyd');
+
+insert into student10 values(102,'ravi','delhi');
+
+insert into student10 values(103,'ramana','vizag');
+
+commit;
+
+student20 table
+--------------
+drop table student20;
+
+create table student20(sno number(3),sname varchar2(10),sadd varchar2(12));
+
+insert into student20 values(103,'Alan','Texas');
+
+insert into student20 values(104,'Nelson','Vegas');
+
+commit;
+
+
+	merge into student10 s1 
+	using student20 s2
+	ON(s1.sno=s2.sno)
+	when matched then 
+	update set sname=s2.sname,sadd=s2.sadd
+	when not matched then 
+	insert (sno,sname,sadd) values(s2.sno,s2.sname,s2.sadd);
+
+	select * from student10; // 2 rows merged
+		
+	select * from student20;
+
+
+Sub Queries
+============
+If we declare a query inside another query such concept is called sub query.
+
+In sub queries , first inner query will execute then outer/parent query.
+
+Sub queries are used to select the records based on unknown values.
+
+we have following list of sub queries.
+
+1) Single Row Sub query 
+
+2) Multiple Row Sub query 
+
+3) Multiple Column Sub query 
+
+
+1) Single Row Sub query 
+-------------------------
+If a sub query returns only one row is called single row sub query.
+
+Sub query can be nested upto 32 levels.
+
+ex:
+	SQL Query 
+	---------
+		select * from emp where eid=201;
+		
+	Sub Query 
+	---------
+		select * from emp where eid=(select eid from emp where ename='Alan');
+
+ex:
+---
+	SQL Query
+	--------
+		select * from emp where eid=201	and ename='Alan';
+
+	Sub Query 
+	--------
+		select * from emp where 
+		eid=(select eid from emp where esal=9000)
+		and 
+		ename=(select ename from emp where eid=201);
+
+
+
+Q) Write a query to display employees information whose salary is greater then Mark salary?
+
+		
+	select * from emp where esal>(select esal from emp where ename='Mark');
+
+
+
+Q) Write a query to display second highest salary from emp table?
+
+	select max(esal) from emp where esal<(select max(esal) from emp);
+
+
+	
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+	
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+	
